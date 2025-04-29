@@ -1,0 +1,1 @@
+from core.signals.create_wallet import create_wallet_for_new_user
