@@ -5,15 +5,10 @@ Wallet Transactions.
 from django.db import models
 from core.models.BaseModels import CreatedAtMixin
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 User = get_user_model()
 
-
-
-# class DiscountType(models.TextChoices):
-#     NEW_USERS = "new_users", "New Users"
-#     ALL_USERS = "all_users", "All Users"
-#     SPECIFIC_USERS = "specific_users", "Specific Users"
 
 class TransactionType(models.IntegerChoices):
     Deposit = 1, "Deposit"
@@ -31,7 +26,7 @@ class TransactionStatus(models.IntegerChoices):
 
 class Transaction(CreatedAtMixin):
     amount = models.DecimalField(max_digits=15, decimal_places=3, default=0.00)
-    type = models.IntegerField(
+    transaction_type = models.IntegerField(
         choices=TransactionType.choices, default=TransactionType.Deposit
     )
     status = models.IntegerField(
@@ -44,4 +39,4 @@ class Transaction(CreatedAtMixin):
     destination_account = models.CharField(max_length=255, null=True, blank=True)
     related_id = models.IntegerField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    transaction_date = models.DateTimeField()
+    transaction_date = models.DateTimeField(default=timezone.now)

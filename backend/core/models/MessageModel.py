@@ -23,4 +23,4 @@ class Message(CreatedAtMixin):
     sent_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.sender_type.capitalize()} ({self.sender.username}) - {self.sent_at.strftime('%Y-%m-%d %H:%M')}"
+        return f"{self.sender_type.capitalize()} ({self.sender}) - {self.sent_at.strftime('%Y-%m-%d %H:%M')}"

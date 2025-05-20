@@ -10,6 +10,8 @@ from core.serializers import SendOTPSerializer, VerifyOTPSerializer
 from django.contrib.auth import login
 from core.utils.GenratorToken import generate_token
 from rest_framework.authtoken.models import Token
+from core.services.otp_service import OTPService
+import asyncio
 import random
 
 
@@ -31,8 +33,15 @@ class SendOTPView(generics.GenericAPIView):
         # چک کنیم کاربر وجود داره یا نه
         user_exists = User.objects.filter(phone_number=phone_number).exists()
 
-        # اینجا باید کد رو با SMS بفرستی. فعلاً چاپ می‌کنیم.
-        print(f"کد OTP برای {phone_number}: {code}")
+        otp_service = OTPService()
+
+        try:
+            asyncio.run(otp_service.send_pattern_otp(phone_number, code))
+        except Exception as e:
+            return Response(
+                {"detail": "خطا در ارسال پیامک", "error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
         return Response(
             {"detail": "OTP ارسال شد", "user_exists": user_exists},

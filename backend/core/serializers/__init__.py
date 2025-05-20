@@ -8,3 +8,4 @@ from core.serializers.OTPSerializer import SendOTPSerializer, VerifyOTPSerialize
 from core.serializers.OtherSerializer import PlanSerializer, CoinPricingSerializer
 from core.serializers.WalletSerializer import WalletWithTransactionsSerializer
 from core.serializers.ChatSerializer import ChatSerializer, MessageSerializer
+from core.serializers.QuickReplySerializer import QuickReplySerializer

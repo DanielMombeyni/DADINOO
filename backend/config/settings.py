@@ -4,10 +4,12 @@ Django settings for config project.
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 SECRET_KEY = "django-insecure-8(2s*#a8wm9^f$+@9)zidada*a(fgqlg8vr*_on##f-qmf$%gc"
 
@@ -29,6 +31,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "django_filters",
+    "rest_framework_simplejwt",
     "rest_framework.authtoken",
     "corsheaders",
     "core",
@@ -53,27 +56,27 @@ AUTHENTICATION_BACKENDS = [
     # "social_core.backends.google.GoogleOAuth2",
 ]
 
-SITE_ID = 1
+# SITE_ID = 1
 
-LOGIN_REDIRECT_URL = "/"
-ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+# LOGIN_REDIRECT_URL = "/"
+# ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "YOUR_GOOGLE_CLIENT_ID"
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "YOUR_GOOGLE_CLIENT_SECRET"
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "YOUR_GOOGLE_CLIENT_ID"
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "YOUR_GOOGLE_CLIENT_SECRET"
 
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "APP": {
-            "client_id": "your-google-client-id",
-            "secret": "your-google-client-secret",
-            "key": "",
-        }
-    }
-}
+# SOCIALACCOUNT_PROVIDERS = {
+#     "google": {
+#         "APP": {
+#             "client_id": "your-google-client-id",
+#             "secret": "your-google-client-secret",
+#             "key": "",
+#         }
+#     }
+# }
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_AUTHENTICATION_METHOD = "email"
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = False
 
 # Middleware
 
@@ -153,6 +156,23 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# ----------------------------------- REDIS ---------------------------------- #
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                (os.environ.get("REDIS_HOST"), os.environ.get("REDIS_PORT", 6379))
+            ],
+        },
+    },
+}
+
+
+DEFAULT_CHARSET = "utf-8"
+FILE_CHARSET = "utf-8"
+
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -189,13 +209,25 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.example.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "your_email@example.com"
-EMAIL_HOST_PASSWORD = "your_email_password"
-DEFAULT_FROM_EMAIL = "noreply@example.com"
+# -------------------------------- SMS CONFIG -------------------------------- #
 
+IPPANEL_API_KEY = os.getenv("IPPANEL_API_KEY")
+IPPANEL_SENDER_NUMBER = os.getenv("IPPANEL_SENDER_NUMBER")
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# --------------------------------- AI CONFIG -------------------------------- #
+
+AIML_API_URL = os.getenv("AIML_API_URL")
+DEFAULT_MODEL = os.getenv("AIML_MODEL")
+DEFAULT_API_KEY = os.getenv("AIML_API_KEY")
+
+# ---------------------- DEFAULT INITIAL WALLET BALANCE ---------------------- #
+
+DEFAULT_INITIAL_WALLET_BALANCE = 150
+
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.example.com"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = "your_email@example.com"
+# EMAIL_HOST_PASSWORD = "your_email_password"
+# DEFAULT_FROM_EMAIL = "noreply@example.com"

@@ -15,4 +15,4 @@ class Plan(CreatedAtMixin, UpdatedAtMixin):
     description = models.TextField()
 
     def __str__(self):
-        return self.name
+        return f" ID: {self.id} Plan name: {self.name}"
